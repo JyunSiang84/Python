@@ -14,7 +14,9 @@ Python擁有眾多成熟的機器學習函式庫，例如：
 ## C. 活躍的社群支援
 全球有大量Python使用者，你可以很容易找到學習資源、教程和解決問題的方法。當遇到困難時，能快速獲得幫助。
 
-## D. Python作為解釋型語言仍能在機器學習應用中保持高效能：
+## D. 高效能
+Python作為解釋型語言仍能在機器學習應用中保持高效能：
+
 ### D1.底層優化實現
 主要的Python機器學習庫（如NumPy、TensorFlow、PyTorch）的核心計算部分實際上是用C/C++編寫的。
     - 這些庫在底層使用編譯型語言實現核心運算
@@ -25,6 +27,8 @@ Python擁有眾多成熟的機器學習函式庫，例如：
    - 將運算轉換為矩陣操作
    - 一次處理大量數據，而不是逐個元素處理
    - 減少了Python解釋器的開銷
+     
+示例代碼：
 ```Python
 # 每次執行Python指令時，解釋器需要將Python程式碼轉換成機器碼的過程
 # 方法1：使用Python迴圈
@@ -48,6 +52,8 @@ result = np.arange(1000000) * 2
    - 避免不必要的數據複製
    - 使用連續的記憶體空間
    - 實現高效的記憶體共享機制
+     
+示例代碼：     
 ```Python
 # 未優化的Python程式碼
 result = []
@@ -100,14 +106,47 @@ Python的影像處理函式庫
 完整的數據預處理工具
 
 #### TensorFlow：
-Google開發的深度學習框架
-支援大規模分散式訓練
-完整的生態系統（TensorBoard等工具）
+優點：
+   - 完整的企業級支援，Google開發的深度學習框架
+   - 支援大規模分散式訓練
+   - 強大的生產環境部署能力
+   - 完整的生態系統（TensorBoard視覺化、TensorFlow Lite等）
+缺點：
+   - 學習曲線較陡
+   - API變更較頻繁
+   - 較複雜的調試過程
+適用場景：
+   - 大規模機器學習項目
+   - 企業級應用部署
+   - 移動設備部署
+   - 需要分散式訓練的專案
+
+示例代碼：
+```Python
+import tensorflow as tf
+
+# 建立簡單的神經網路
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+```
 
 #### PyTorch：
-Facebook開發的深度學習框架
-動態計算圖特性
-適合研究和實驗
+優點：
+   - 活躍的研究社群，Facebook開發的深度學習框架
+   - 動態計算圖特性，更直觀的除錯
+   - Python風格的程式碼
+   - 靈活的模型定義
+缺點：
+   - 生產環境工具相對較少
+   - 移動端支援不如TensorFlow
+   - 企業級支援較弱
+適用場景：
+   - 研究和實驗
+   - 快速原型開發
+   - 需要高度客製化的模型
+   - 學術研究項目
 
 ### E5. 視覺化工具：
 #### Matplotlib：
@@ -125,6 +164,7 @@ Python可以輕鬆地與其他工具和系統整合，這對於建立完整的�
 
 #### F1. 豐富的API（Application Programming Interface）和接口支援：
    - REST API支援：透過requests、FastAPI等套件輕鬆與網路服務互動，通過HTTP請求進行數據交換
+示例代碼：
 ```Python
 import requests
 # 從網路API獲取天氣數據
@@ -177,6 +217,7 @@ r('x <- c(1,2,3)')
    - Spark整合（PySpark）
    - Hadoop生態系統支援
    - 串流處理工具（Kafka整合）
+示例代碼：
 ```python
 # PySpark示例
 from pyspark.sql import SparkSession

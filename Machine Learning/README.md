@@ -73,8 +73,73 @@ house_features = {
   - 定義：透過已標記的數據來學習，需要標記數據，直接的評估指標
   - 輸入：特徵(X)和標籤(y)
   - 目標：學習特徵和標籤之間的關係，適合預測問題
+  - 
+#### B1-1. 分類 (Classification)：
+  - 目標：預測類別（離散值）
+  - 輸出：類別標籤或機率
 
-常見應用：預測股價、垃圾郵件分類
+常見分類算法：
+```python
+# 二元分類：預測是/否
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+
+# 邏輯回歸
+model = LogisticRegression()
+# 預測顧客是否會流失
+model.fit(customer_features, churn_labels)  # 1=流失, 0=留存
+
+# 決策樹
+model = DecisionTreeClassifier()
+# 預測郵件是否為垃圾郵件
+model.fit(email_features, spam_labels)  # 1=垃圾, 0=正常
+```
+評估指標：
+```python
+from sklearn.metrics import accuracy_score, precision_score, recall_score
+
+# 準確率
+accuracy = accuracy_score(y_true, y_pred)
+# 精確率
+precision = precision_score(y_true, y_pred)
+# 召回率
+recall = recall_score(y_true, y_pred)
+```
+常見應用：
+  - 預測離散類別。例如：垃圾郵件檢測、疾病診斷
+  - 評估關注準確率、精確率、召回率
+
+#### B1-2. 回歸 (Regression)：
+  - 目標：預測數值（連續值）
+  - 輸出：數值預測
+
+常見回歸算法：
+```python
+# 線性回歸
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+# 預測房屋價格
+model.fit(house_features, prices)
+
+# 隨機森林回歸
+from sklearn.ensemble import RandomForestRegressor
+
+model = RandomForestRegressor()
+# 預測股票價格
+model.fit(stock_features, stock_prices)
+```
+
+評估指標：
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+
+# 均方誤差
+mse = mean_squared_error(y_true, y_pred)
+# R平方值
+r2 = r2_score(y_true, y_pred)
+```
+
 ```python
 # 分類問題示例
 from sklearn.linear_model import LogisticRegression
@@ -88,6 +153,10 @@ from sklearn.linear_model import LinearRegression
 model = LinearRegression()
 model.fit(house_features, house_prices)
 ```
+
+常見應用：
+  - 預測連續數值。例如：房價預測、溫度預測、預測股價
+  - 評估關注誤差大小、擬合程度。例如：垃圾郵件分類
 
 ### B2. 非監督式學習 (Unsupervised Learning)：
   - 定義：從未標記的數據中發現模式，不需要標記數據，評估較困難

@@ -102,10 +102,29 @@ Python的影像處理函式庫
 ### E4. 通用機器學習框架：
 #### scikit-learn：
 優點：
-   - 簡單易用，適合入門學習，易於使用的API
+   - 簡單易用，適合入門學習(初學者)，易於使用的API
    - 提供廣泛的傳統機器學習算法
    - 與Python數據科學生態系統完美整合，完整的數據預處理工具
    - 優秀的文檔和社群支援
+缺點：
+   - 不支援深度學習
+   - 不支援GPU加速
+   - 對大規模數據處理效能較差
+適用場景：
+   - 經典(傳統)機器學習任務（分類、回歸、聚類）
+   - 數據預處理(EX: 客戶流失預測)
+   - 特徵工程(EX: 垃圾郵件分類)
+   - 小型到中型數據集的分析，小規模數據處理快速
+示例代碼：
+```Python
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+
+# 簡單的分類任務
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+model = LogisticRegression()
+model.fit(X_train, y_train)
+```
 
 #### TensorFlow：
 優點：
@@ -118,8 +137,8 @@ Python的影像處理函式庫
    - API變更較頻繁
    - 較複雜的調試過程
 適用場景：
-   - 大規模機器學習項目
-   - 企業級應用部署
+   - 大規模機器學習項目，大規模訓練效能最好
+   - 企業級應用部署(較穩定)
    - 移動設備部署
    - 需要分散式訓練的專案
 
@@ -145,10 +164,76 @@ model = tf.keras.Sequential([
    - 移動端支援不如TensorFlow
    - 企業級支援較弱
 適用場景：
-   - 研究和實驗
-   - 快速原型開發
+   - 研究和實驗，容易實驗新想法，開發和除錯效率高
+   - 快速原型開發，程式碼易讀易改
    - 需要高度客製化的模型
    - 學術研究項目
+示例代碼：
+```Python
+import torch
+import torch.nn as nn
+
+# 定義神經網路
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.fc1 = nn.Linear(784, 128)
+        self.fc2 = nn.Linear(128, 10)
+    
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        return self.fc2(x)
+```
+
+#### Keras：
+優點：
+   - 高層級的深度學習API
+   - 直觀的模型構建方式
+   - 可以運行在TensorFlow或其他後端
+   - 強大的深度學習功能
+缺點：
+   - 對底層的控制較少
+   - 可能不如純TensorFlow靈活
+   - 調試較困難
+適用場景：
+   - 深度學習項目(深度學習入門)
+   - 神經網路模型開發
+   - 圖像識別(EX: 人臉識別系統)
+   - 自然語言處理(EX: 語音識別)
+示例代碼：
+```Python
+import turicreate as tc
+
+# 建立推薦系統
+data = tc.SFrame('user_data.csv')
+model = tc.recommender.create(data, 'user_id', 'item_id')
+recommendations = model.recommend(users=['user1'])
+```
+
+#### Turi Create：
+優點：
+   - 專注於簡化機器學習開發流程
+   - 內建可視化工具
+   - 適合快速原型開發
+   - 支援多種數據格式
+缺點：
+   - 社群相對較小
+   - 自定義能力較限
+   - 主要針對macOS優化
+適用場景：
+   - 快速建立推薦系統(快速應用開發)(EX: 商品推薦系統)
+   - 圖像分類(EX: 社交媒體圖像分類)
+   - 物體檢測
+   - 行動應用的機器學習功能
+示例代碼：
+```Python
+import turicreate as tc
+
+# 建立推薦系統
+data = tc.SFrame('user_data.csv')
+model = tc.recommender.create(data, 'user_id', 'item_id')
+recommendations = model.recommend(users=['user1'])
+```
 
 ### E5. 視覺化工具：
 #### Matplotlib：

@@ -43,7 +43,7 @@ x, y = get_coordinates()  # x = 3, y = 4
 更多具體的使用場景如下:
 
 ### A2. 進階語言特性 descriptor 語法
-需要理解物件導向和 Python 的屬性查找機制
+需要理解物件導向和 Python 的屬性查找機制，因為這內容比較多將在另一文件 descriptor.ipynb 說明。
    - 屬性訪問控制
    - 惰性計算
    - 型別檢查

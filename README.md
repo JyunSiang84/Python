@@ -78,7 +78,7 @@
 - [ ] 非監督式學習
 
 ## 目錄結構 📂
-Python/
+```Python
 ├── basics/                    # 基礎語法練習
 │   ├── python-advantages.md   # Python 優勢說明
 │   ├── variables.py          # 變數與型態示例
@@ -105,6 +105,7 @@ Python/
 ├── .gitignore             # Git 忽略檔案
 ├── LICENSE                # 授權宣告
 └── README.md             # 專案說明（本檔案）
+```
 
 ## 學習資源 📚
 ### 官方文件

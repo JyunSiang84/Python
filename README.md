@@ -113,10 +113,40 @@
 - [Python 語言參考](<https://docs.python.org/zh-tw/3.13/reference/>)
 
 ### 推薦書籍
+#### 1. 入門書籍
+- Python Crash Course (Python 快速上手)
+- Learning Python (Python 學習手冊)
+- Python Programming for Beginners
+  
+#### 2. 進階書籍
+- 流暢的 Python (Fluent Python)
+- Python Cookbook
+- Effective Python
+
+#### 3. 專題書籍
+- Python for Data Analysis
+- Machine Learning with Python Cookbook
+- Web Development with Python and Flask
 
 ### 線上資源
+#### 1. 教學網站
+- [Real Python](<https://realpython.com/>)
+- [Python Weekly](<https://www.pythonweekly.com/>)
+- [Codecademy Python](<https://www.codecademy.com/learn/learn-python-3>)
 
+#### 2. 教學影片
+- [Sentdex Python 基礎教學](<https://www.youtube.com/playlist?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M>)
+- [Corey Schafer Python 教學](<https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU>)
+
+#### 3. 練習平台
+- Codewars(<https://www.codewars.com/>)
+- HackerRank(<https://www.codewars.com/>)
+- 
 ## 學習筆記與心得 📝
+我在 Wiki 中記錄了詳細的學習筆記和心得：
+1. Python 基礎概念
+2. 程式設計技巧
+3. 常見問題與解決方案
 
 ## 學習進度與日誌更新 📅
 - [x] Python 基礎語法 (2024/12/01-2024/12/07)
@@ -127,7 +157,8 @@
 - [ ] 錯誤處理
 - [ ] 模組與套件
 
-
-
-
+## 聯絡資訊 📮
+如果您有任何問題或建議，歡迎透過以下方式聯繫：
+GitHub: @JyunSiang84
+Email: [benhang.gjs@gmail.com]
 

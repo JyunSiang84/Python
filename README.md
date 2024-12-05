@@ -159,6 +159,6 @@
 
 ## 聯絡資訊 📮
 如果您有任何問題或建議，歡迎透過以下方式聯繫：
-GitHub: @JyunSiang84
-Email: [benhang.gjs@gmail.com]
+- GitHub: @JyunSiang84
+- Email: [benhang.gjs@gmail.com]
 

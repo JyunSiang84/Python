@@ -403,7 +403,22 @@ warn_return_any = true
 warn_unused_configs = true
 
 ### 3.3 測試工具配置
-####3.3.1 pytest 配置
+#### 3.3.1 pytest 配置
+pytest 是您的品質保證工程師，它幫助您確保程式碼的每個部分都能正確運作。它提供了一個直觀的方式來編寫和執行測試。
+```bash
+# 安裝
+pip install pytest
+
+# 建立測試檔案 test_example.py
+def test_simple_function():
+    assert 1 + 1 == 2
+
+# 運行測試
+pytest  # 運行所有測試
+pytest test_specific_file.py  # 運行特定檔案
+pytest -v  # 詳細輸出
+pytest -k "test_name"  # 運行特定測試
+```
 pytest 是 Python 最受歡迎的測試框架之一，它提供了直觀的方式來編寫和執行測試：
 ```python
 # test_example.py
@@ -413,6 +428,7 @@ def test_addition():
 def test_string_methods():
     assert "hello".upper() == "HELLO"
 ```
+
 在 pytest.ini 中配置測試行為：
 ```ini
 [pytest]
@@ -422,7 +438,18 @@ python_functions = test_*
 addopts = -v --cov=. --cov-report=html
 testpaths = tests
 ```
-####3.3.2 mypy 配置
+#### 3.3.2 mypy 配置(靜態類型檢查工具)
+mypy 就像是一位型別檢查專家，它在程式碼運行之前就能找出可能的型別錯誤，幫助您避免執行時才發現的問題。
+```bash
+# 安裝
+pip install mypy
+
+# 基本使用
+mypy your_file.py
+
+# 檢查整個專案
+mypy .
+```
 mypy 是強大的靜態型別檢查工具，它能在程式執行前找出潛在的型別錯誤：
 ```python
 def greet(name: str) -> str:
@@ -433,7 +460,7 @@ result: str = greet("World")  # 正確
 result: int = greet("World")  # mypy 會報錯
 ```
 
-###3.4 VS Code 整合設定
+### 3.4 VS Code 整合設定
 將所有工具整合到 VS Code 中，在 settings.json 中添加：
 ```json
 {
@@ -455,70 +482,6 @@ result: int = greet("World")  # mypy 會報錯
 4. 進行型別檢查
 
 在開發過程中，這些工具會共同工作，確保您的程式碼品質。它們就像是一個協調良好的團隊，每個成員都專注於自己的專業領域，共同為產出高品質的程式碼而努力。
-
-
-
-
--------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-#### 3.1.5. pytest：單元測試框架
-pytest 是您的品質保證工程師，它幫助您確保程式碼的每個部分都能正確運作。它提供了一個直觀的方式來編寫和執行測試。
-```bash
-# 安裝
-pip install pytest
-
-# 建立測試檔案 test_example.py
-def test_simple_function():
-    assert 1 + 1 == 2
-
-# 運行測試
-pytest  # 運行所有測試
-pytest test_specific_file.py  # 運行特定檔案
-pytest -v  # 詳細輸出
-pytest -k "test_name"  # 運行特定測試
-```
-
-#### 3.1.6. mypy：靜態類型檢查工具
-mypy 就像是一位型別檢查專家，它在程式碼運行之前就能找出可能的型別錯誤，幫助您避免執行時才發現的問題。
-```bash
-# 安裝
-pip install mypy
-
-# 基本使用
-mypy your_file.py
-
-# 檢查整個專案
-mypy .
-```
-#### 3.1.7. 整合到開發流程
-這些工具可以整合到您的開發流程中，因此在 VS Code 中的 settings.json 配置：
-```bash
-{
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.pylintArgs": [
-        "--errors-only",
-        "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*"
-    ],
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    },
-
-    "python.formatting.provider": "black",
-    "editor.formatOnSave": true,
-    "python.linting.mypyEnabled": true
-}
-```
-
--------------------------------------------------------------------------------
-
 
 ## 4. 除錯配置
 ### 4.1 建立除錯設定

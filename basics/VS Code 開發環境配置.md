@@ -139,23 +139,75 @@ print(sys.executable)  # 這會顯示當前使用的 Python 解釋器路徑
 ```bash
 deactivate
 ```
+### 2.4 版本控制配置-Git 整合
+設定 Git 整合功能：
+1. 安裝 GitLens 擴充套件
+2. 配置 .gitignore：
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IDE
+.idea/
+*.swp
+*.swo
+```
+3. 設定 Git 提交模板：
+在 .git/config 中添加
+```
+# 在 .git/config 中添加
+[commit]
+    template = .gitmessage
+```
 
 ## 3. 程式碼品質工具
 ### 3.1 安裝開發工具
-在虛擬環境中安裝以下工具：
+在 Python 開發中，程式碼品質工具就像是我們的品質管理團隊，每個工具都扮演著特定且重要的角色。首先，讓我們在虛擬環境中安裝這些基本工具：
 ```bash
 pip install pylint black isort pytest mypy
 ```
-#### 3.1.1. Linting
-- 基礎設定
-這兩行設定是 Linting 的基礎開關。想像您有一位助手在您寫程式碼時即時檢查您的工作。第一行是總開關，告訴 VS Code「是的，我想要即時程式碼檢查」。第二行特別指定要使用 Pylint 作為檢查工具，就像選擇特定的助手來幫您檢查程式碼。
-```json
-"python.linting.enabled": true,
-"python.linting.pylintEnabled": true,
-```
+- pylint：程式碼分析員，負責檢查程式碼品質和風格
+- black：格式化專家，自動調整程式碼排版
+- isort：導入語句管理員，整理和組織導入語句
+- pytest：測試工程師，確保程式碼功能正確
+- mypy：型別檢查專家，防止型別相關錯誤
+- 
+### 3.2 程式碼風格與品質配置
 
-- 配置
-在專案根目錄創建 .pylintrc 檔案：
+#### 3.2.1 Pylint 配置（Linting）
+Pylint 是我們的首席程式碼審查員。它不只檢查程式碼是否能運行，還會關注程式碼的品質和風格。
+首先，在專案根目錄創建 .pylintrc 檔案：
 ```bash
 # 方法一：讓 pylint 自動生成預設配置文件
 pylint --generate-rcfile > .pylintrc
@@ -165,8 +217,7 @@ touch .pylintrc  # Linux/macOS
 # 或在 Windows PowerShell 中：
 # New-Item .pylintrc -Type File
 ```
-
-配置文件內容
+ .pylintrc 配置文件內容：
 ```ini
 [MASTER]
 # 忽略特定目錄，通常是不需要檢查的目錄
@@ -196,6 +247,24 @@ max-args=5          # 函數參數最大數量
 max-attributes=7    # 類屬性最大數量
 max-locals=15       # 局部變數最大數量
 ```
+在 VS Code 的 settings.json 中配置 Pylint：
+```json
+"python.linting.enabled": true,
+"python.linting.pylintEnabled": true,
+```
+這兩行設定是 Linting 的基礎開關。想像您有一位助手在您寫程式碼時即時檢查您的工作。
+- 第一行是總開關，告訴 VS Code「是的，我想要即時程式碼檢查」。
+- 第二行特別指定要使用 Pylint 作為檢查工具，就像選擇特定的助手來幫您檢查程式碼。
+
+```json
+"python.linting.pylintArgs": [
+    "--errors-only",
+    "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*"
+],
+```
+這部分設定告訴 Pylint 如何執行檢查工作：
+- "--errors-only" 表示 Pylint 只會報告實際的錯誤，而不會提示風格問題。這就像告訴助手「只告訴我可能導致程式出錯的問題，暫時不用在意程式碼是否漂亮」。
+- "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*" 是一個特別重要的設定，它處理動態生成的程式碼成員。在使用 NumPy、PyTorch 或 OpenCV 這類函式庫時特別有用。這些函式庫會動態生成一些成員，Pylint 可能會誤判這些成員不存在。這個設定就像告訴助手「這些特定的程式庫會自動產生一些功能，不要把它們標記為錯誤」。
 
 測試是否生效
 ```bash
@@ -204,32 +273,8 @@ pylint Pylint_Test.py --enable=all
 pylint Pylint_Test.py
 # 配置文件設定，作為檢查標準。
 ```
-
-- 格式化工具配置
-
-```ini
-[MASTER]
-disable=C0111,C0103,C0303,W0311
-max-line-length=100
-ignore=migrations
-
-[MESSAGES CONTROL]
-disable=missing-docstring,invalid-name
-
-[FORMAT]
-max-line-length=100
-```
-
-#### 3.1.2. pylint：程式碼分析工具
-Pylint 就像是一位嚴格的程式碼審查員，它會檢查您的程式碼是否符合 Python 的標準規範和最佳實踐
-- 編輯器整合：在 VS Code 中即時顯示問題。
-- 版本控制：在提交程式碼前自動檢查。
-- 持續整合：在部署前自動執行檢查。
-
+基本使用方法：
 ```bash
-# 安裝
-pip install pylint
-
 # 基本使用
 pylint your_file.py
 
@@ -237,29 +282,8 @@ pylint your_file.py
 pylint your_directory/
 ```
 
-
-1. Pylint 參數配置
-這部分設定告訴 Pylint 如何執行檢查工作：
-- "--errors-only" 表示 Pylint 只會報告實際的錯誤，而不會提示風格問題。這就像告訴助手「只告訴我可能導致程式出錯的問題，暫時不用在意程式碼是否漂亮」。
-- "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*" 是一個特別重要的設定，它處理動態生成的程式碼成員。在使用 NumPy、PyTorch 或 OpenCV 這類函式庫時特別有用。這些函式庫會動態生成一些成員，Pylint 可能會誤判這些成員不存在。這個設定就像告訴助手「這些特定的程式庫會自動產生一些功能，不要把它們標記為錯誤」。
-```json
-"python.linting.pylintArgs": [
-    "--errors-only",
-    "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*"
-],
-```
-2. 自動整理 Imports
-這個設定是關於自動整理您的 import 語句。每當您儲存檔案時，VS Code 會：
-- 移除未使用的 import
-- 按照特定規則排序 import 語句
-- 合併相同來源的 import
-這就像有位助手在您整理完文件後，自動幫您將參考文獻整理成正確的格式和順序。
-```json
-"editor.codeActionsOnSave": {
-    "source.organizeImports": true
-}
-```
-#### 3.1.3. black：程式碼格式化工具
+#### 3.2.2 Black 配置（格式化）
+Black 是我們的程式碼格式化專家，它使用一套固定的規則來確保程式碼風格的一致性。它的特點是不妥協——所有的程式碼都會遵循相同的格式標準。
 Black 就像是一位固執但高效的美編，它會自動調整您的程式碼格式，使其符合一致的風格標準。它的特點是不講情面 - 用固定的規則確保所有程式碼都有相同的外觀。
 ```bash
 # 安裝
@@ -275,7 +299,7 @@ black .
 black --check your_file.py
 ```
 
-#### 3.1.4. isort：import 語句排序工具
+#### 3.2.3 isort 配置（import 排序）
 isort 專門整理您的 import 語句，就像一位專門整理書架的圖書管理員，確保所有的導入語句都按照邏輯順序排列。
 ```bash
 # 安裝
@@ -290,6 +314,159 @@ isort .
 # 檢查而不修改
 isort --check-only your_file.py
 ```
+
+#### 3.2.4 整合配置（pyproject.toml）
+- pyproject.toml 是現代 Python 專案的中央配置文件，它可以統一管理多個開發工具的設定。這個文件應該放在專案根目錄：
+- pyproject.toml 是一個現代的 Python 專案配置檔案，使用 TOML 格式（一種易於閱讀的配置檔案格式）。想像它像是一個食譜，告訴不同的工具該如何處理您的程式碼。
+
+這個設定是關於自動整理您的 import 語句。每當您儲存檔案時，VS Code 會：
+- 移除未使用的 import
+- 按照特定規則排序 import 語句
+- 合併相同來源的 import
+這就像有位助手在您整理完文件後，自動幫您將參考文獻整理成正確的格式和順序。
+```json
+"editor.codeActionsOnSave": {
+    "source.organizeImports": true
+}
+```
+
+
+1. Black 工具的配置：
+```toml
+[tool.black]
+line-length = 100                # 設定每行程式碼的最大長度為100個字符
+target-version = ['py38']        # 指定要支援的 Python 版本
+include = '\.pyi?$'             # 設定要格式化的檔案類型（.py 和 .pyi 檔案）
+extend-exclude = '''
+# A regex preceded with ^/ will apply only to files and directories
+# in the root of the project.
+^/foo.py  # exclude a file named foo.py in the root of the project
+'''                             # 設定要排除的檔案
+```
+這部分告訴 Black（Python 的程式碼格式化工具）如何工作：
+- 允許較長的行（100個字符而不是預設的88個）
+- 針對 Python 3.8 版本優化格式化
+- 可以排除特定檔案不被格式化
+
+2. isort 工具的配置：
+```toml
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+```
+這部分設定 isort（用於排序 import 語句的工具）：
+- 確保它的格式化風格與 Black 一致
+- 指定如何處理多行的 import 語句
+
+3. 實際運用範例
+格式化前：
+```python
+import sys,os
+from datetime import datetime,date,timedelta
+def very_long_function_name(parameter1,parameter2,parameter3,parameter4,parameter5,parameter6,parameter7):return parameter1+parameter2
+```
+使用這個配置後，代碼會被格式化為：
+```python
+from datetime import date, datetime, timedelta
+import os
+import sys
+
+def very_long_function_name(
+    parameter1,
+    parameter2,
+    parameter3,
+    parameter4,
+    parameter5,
+    parameter6,
+    parameter7,
+):
+    return parameter1 + parameter2
+```
+
+4. 如何使用
+- 安裝所需工具： pip install black isort
+- 在專案根目錄建立 pyproject.toml 檔案並加入配置
+- 運行格式化：
+```bash
+black .          # 格式化所有 Python 檔案
+isort .         # 排序所有檔案的 imports
+```
+這樣的配置有助於確保團隊中所有成員的程式碼風格保持一致，減少因為格式問題而產生的版本控制衝突。
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+
+### 3.3 測試工具配置
+####3.3.1 pytest 配置
+pytest 是 Python 最受歡迎的測試框架之一，它提供了直觀的方式來編寫和執行測試：
+```python
+# test_example.py
+def test_addition():
+    assert 1 + 1 == 2
+
+def test_string_methods():
+    assert "hello".upper() == "HELLO"
+```
+在 pytest.ini 中配置測試行為：
+```ini
+[pytest]
+python_files = test_*.py
+python_classes = Test*
+python_functions = test_*
+addopts = -v --cov=. --cov-report=html
+testpaths = tests
+```
+####3.3.2 mypy 配置
+mypy 是強大的靜態型別檢查工具，它能在程式執行前找出潛在的型別錯誤：
+```python
+def greet(name: str) -> str:
+    return f"Hello, {name}"
+
+# mypy 會檢查這類型別使用是否正確
+result: str = greet("World")  # 正確
+result: int = greet("World")  # mypy 會報錯
+```
+
+###3.4 VS Code 整合設定
+將所有工具整合到 VS Code 中，在 settings.json 中添加：
+```json
+{
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "python.linting.mypyEnabled": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "python.sortImports.args": ["--profile", "black"]
+}
+```
+這些設定確保：
+1. 儲存時自動格式化程式碼
+2. 自動整理導入語句
+3. 即時顯示程式碼問題
+4. 進行型別檢查
+
+在開發過程中，這些工具會共同工作，確保您的程式碼品質。它們就像是一個協調良好的團隊，每個成員都專注於自己的專業領域，共同為產出高品質的程式碼而努力。
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
 #### 3.1.5. pytest：單元測試框架
 pytest 是您的品質保證工程師，它幫助您確保程式碼的每個部分都能正確運作。它提供了一個直觀的方式來編寫和執行測試。
@@ -339,6 +516,8 @@ mypy .
     "python.linting.mypyEnabled": true
 }
 ```
+
+-------------------------------------------------------------------------------
 
 
 ## 4. 除錯配置
@@ -445,60 +624,8 @@ mypy .
 - 建立發布標籤
 - 執行部署流程
 
-## 8. 進階配置
-### 8.1 Git 整合
-設定 Git 整合功能：
-1. 安裝 GitLens 擴充套件
-2. 配置 .gitignore：
-```gitignore
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual Environment
-venv/
-ENV/
-env/
-
-# VS Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# IDE
-.idea/
-*.swp
-*.swo
-```
-3. 設定 Git 提交模板：
-在 .git/config 中添加
-```
-# 在 .git/config 中添加
-[commit]
-    template = .gitmessage
-```
-   
-### 8.2 自動化測試
+## 8. 進階配置  
+### 8.1 自動化測試
 配置自動化測試環境：
 1. 設定 pytest.ini：
 ```ini
@@ -526,3 +653,4 @@ testpaths = tests
     ]
    }
    ```
+## 9. 持續整合/持續部署（CI/CD）配置

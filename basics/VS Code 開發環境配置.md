@@ -108,30 +108,179 @@ pip freeze | cut -d'=' -f1 | xargs pip install --upgrade  # macOS/Linux
 這個過程就像是告訴 VS Code 要使用哪個「工具箱」來執行您的 Python 程式。
 
 ##### 方法一：透過命令面板選擇（最直觀的方式）
+1. 首先按下快捷鍵開啟命令面板：
+- Windows/Linux：Ctrl + Shift + P
+- macOS：Cmd + Shift + P
+2. 在命令面板中輸入 "Python: Select Interpreter"，您會看到一個下拉選單，列出所有可用的 Python 解釋器。在這裡，您應該能看到虛擬環境的 Python 解釋器，通常會標示為 ('venv': venv)。
+3. 選擇您的虛擬環境解釋器後，VS Code 會在狀態列（左下角）顯示所選的 Python 版本，這樣您就能確認是否正在使用正確的解釋器。
 ##### 方法二：透過設定檔配置（適合團隊協作）
+在專案的 .vscode/settings.json 檔案中添加以下設定：
+```json
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",
+    "python.pythonPath": "${workspaceFolder}/venv/bin/python"
+}
+```
+這裡的路徑需要根據您的作業系統調整：
+- Windows：使用 venv\\Scripts\\python.exe
+- macOS/Linux：使用 venv/bin/python
 ##### 方法三：建立工作區設定（最靈活的方式）
 
-#### 2.3.5. 結束使用虛擬環境：
+#### 2.3.5. 確認虛擬環境是否正確啟用/結束使用虛擬環境：
+- 確認虛擬環境是否正確啟用，有幾個方法可以確認您是否正在使用虛擬環境：
+1. 觀察狀態列：在 VS Code 的左下角，您應該能看到 Python 解釋器的路徑，它應該指向您的虛擬環境。
+2. 透過終端機確認：開啟 VS Code 的整合終端機（Ctrl+），您應該能看到提示符號前有 (venv)` 標記。
+3. 執行測試程式：
+```bash
+import sys
+print(sys.executable)  # 這會顯示當前使用的 Python 解釋器路徑
+```
+- 結束使用虛擬環境
 ```bash
 deactivate
 ```
 
 ## 3. 程式碼品質工具
 ### 3.1 安裝開發工具
-### 3.2 Linting 配置
-### 3.3 格式化工具配置
+在虛擬環境中安裝以下工具：
+```bash
+pip install pylint black isort pytest mypy
+```
+#### 3.1.1. pylint：程式碼分析工具
+Pylint 就像是一位嚴格的程式碼審查員，它會檢查您的程式碼是否符合 Python 的標準規範和最佳實踐
+- 編輯器整合：在 VS Code 中即時顯示問題。
+- 版本控制：在提交程式碼前自動檢查。
+- 持續整合：在部署前自動執行檢查。
+```bash
+# 安裝
+pip install pylint
 
-## 4. 除錯配置
-### 4.1 建立除錯設定
+# 基本使用
+pylint your_file.py
 
-## 5. 實用快捷鍵
+# 或分析整個目錄
+pylint your_directory/
+```
+1. 啟用 Linting
+這兩行設定是 Linting 的基礎開關。想像您有一位助手在您寫程式碼時即時檢查您的工作。第一行是總開關，告訴 VS Code「是的，我想要即時程式碼檢查」。第二行特別指定要使用 Pylint 作為檢查工具，就像選擇特定的助手來幫您檢查程式碼。
+```json
+"python.linting.enabled": true,
+"python.linting.pylintEnabled": true,
+```
+2. Pylint 參數配置
+這部分設定告訴 Pylint 如何執行檢查工作：
+- "--errors-only" 表示 Pylint 只會報告實際的錯誤，而不會提示風格問題。這就像告訴助手「只告訴我可能導致程式出錯的問題，暫時不用在意程式碼是否漂亮」。
+- "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*" 是一個特別重要的設定，它處理動態生成的程式碼成員。在使用 NumPy、PyTorch 或 OpenCV 這類函式庫時特別有用。這些函式庫會動態生成一些成員，Pylint 可能會誤判這些成員不存在。這個設定就像告訴助手「這些特定的程式庫會自動產生一些功能，不要把它們標記為錯誤」。
+```json
+"python.linting.pylintArgs": [
+    "--errors-only",
+    "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*"
+],
+```
+3. 自動整理 Imports
+這個設定是關於自動整理您的 import 語句。每當您儲存檔案時，VS Code 會：
+- 移除未使用的 import
+- 按照特定規則排序 import 語句
+- 合併相同來源的 import
+這就像有位助手在您整理完文件後，自動幫您將參考文獻整理成正確的格式和順序。
+```json
+"editor.codeActionsOnSave": {
+    "source.organizeImports": true
+}
+```
+#### 3.1.2. black：程式碼格式化工具
+Black 就像是一位固執但高效的美編，它會自動調整您的程式碼格式，使其符合一致的風格標準。它的特點是不講情面 - 用固定的規則確保所有程式碼都有相同的外觀。
+```bash
+# 安裝
+pip install black
 
-## 6. 常見問題解決
-### 6.1 路徑問題
-### 6.2 編碼問題
+# 格式化單一檔案
+black your_file.py
 
-## 7. 建議的工作流程
+# 格式化整個目錄
+black .
 
-## 8. 進階配置
-### 8.1 Git 整合
-### 8.2 自動化測試
+# 檢查而不修改（顯示會做什麼更改）
+black --check your_file.py
+```
+
+#### 3.1.3. isort：import 語句排序工具
+isort 專門整理您的 import 語句，就像一位專門整理書架的圖書管理員，確保所有的導入語句都按照邏輯順序排列。
+```bash
+# 安裝
+pip install isort
+
+# 排序單一檔案
+isort your_file.py
+
+# 排序整個目錄
+isort .
+
+# 檢查而不修改
+isort --check-only your_file.py
+```
+
+#### 3.1.4. pytest：單元測試框架
+pytest 是您的品質保證工程師，它幫助您確保程式碼的每個部分都能正確運作。它提供了一個直觀的方式來編寫和執行測試。
+```bash
+# 安裝
+pip install pytest
+
+# 建立測試檔案 test_example.py
+def test_simple_function():
+    assert 1 + 1 == 2
+
+# 運行測試
+pytest  # 運行所有測試
+pytest test_specific_file.py  # 運行特定檔案
+pytest -v  # 詳細輸出
+pytest -k "test_name"  # 運行特定測試
+```
+
+#### 3.1.5. mypy：靜態類型檢查工具
+mypy 就像是一位型別檢查專家，它在程式碼運行之前就能找出可能的型別錯誤，幫助您避免執行時才發現的問題。
+```bash
+# 安裝
+pip install mypy
+
+# 基本使用
+mypy your_file.py
+
+# 檢查整個專案
+mypy .
+```
+#### 3.1.6. 整合到開發流程
+這些工具可以整合到您的開發流程中，因此在 VS Code 中的 settings.json 配置：
+```bash
+{
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [
+        "--errors-only",
+        "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*"
+    ],
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "python.linting.mypyEnabled": true
+}
+```
+
+
+## 3. 除錯配置
+### 3.1 建立除錯設定
+
+## 4. 實用快捷鍵
+
+## 5. 常見問題解決
+### 5.1 路徑問題
+### 5.2 編碼問題
+
+## 6. 建議的工作流程
+
+## 7. 進階配置
+### 7.1 Git 整合
+### 7.2 自動化測試

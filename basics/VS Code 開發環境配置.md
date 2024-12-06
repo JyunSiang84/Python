@@ -146,11 +146,86 @@ deactivate
 ```bash
 pip install pylint black isort pytest mypy
 ```
-#### 3.1.1. pylint：程式碼分析工具
+#### 3.1.1. Linting
+- 基礎設定
+這兩行設定是 Linting 的基礎開關。想像您有一位助手在您寫程式碼時即時檢查您的工作。第一行是總開關，告訴 VS Code「是的，我想要即時程式碼檢查」。第二行特別指定要使用 Pylint 作為檢查工具，就像選擇特定的助手來幫您檢查程式碼。
+```json
+"python.linting.enabled": true,
+"python.linting.pylintEnabled": true,
+```
+
+- 配置
+在專案根目錄創建 .pylintrc 檔案：
+```bash
+# 方法一：讓 pylint 自動生成預設配置文件
+pylint --generate-rcfile > .pylintrc
+
+# 方法二：手動創建文件
+touch .pylintrc  # Linux/macOS
+# 或在 Windows PowerShell 中：
+# New-Item .pylintrc -Type File
+```
+
+配置文件內容
+```ini
+[MASTER]
+# 忽略特定目錄，通常是不需要檢查的目錄
+ignore=CVS,migrations,venv,tests
+
+[MESSAGES CONTROL]
+# 停用一些常見但不那麼重要的警告，讓我們能專注於更重要的問題
+disable=C0111,  # missing-docstring：缺少文檔字符串
+        C0103,  # invalid-name：變數命名規範
+        C0303,  # trailing-whitespace：行尾空格
+        W0611,  # unused-import：未使用的導入
+        R0903,  # too-few-public-methods：公開方法太少
+        R0913   # too-many-arguments：參數太多
+
+[FORMAT]
+# 程式碼格式設定，確保程式碼的可讀性
+max-line-length=100
+indent-string='    '
+
+[BASIC]
+# 允許的變數名稱，允許常用的簡短變數名
+good-names=i,j,k,ex,Run,_,id,df,ax
+
+[DESIGN]
+# 設定程式碼結構的基本限制，防止函數或類變得太複雜
+max-args=5          # 函數參數最大數量
+max-attributes=7    # 類屬性最大數量
+max-locals=15       # 局部變數最大數量
+```
+
+測試是否生效
+```bash
+pylint Pylint_Test.py --enable=all
+# 這個命令告訴 Pylint 忽略所有的配置文件設定，使用最嚴格的檢查標準。
+pylint Pylint_Test.py
+# 配置文件設定，作為檢查標準。
+```
+
+- 格式化工具配置
+
+```ini
+[MASTER]
+disable=C0111,C0103,C0303,W0311
+max-line-length=100
+ignore=migrations
+
+[MESSAGES CONTROL]
+disable=missing-docstring,invalid-name
+
+[FORMAT]
+max-line-length=100
+```
+
+#### 3.1.2. pylint：程式碼分析工具
 Pylint 就像是一位嚴格的程式碼審查員，它會檢查您的程式碼是否符合 Python 的標準規範和最佳實踐
 - 編輯器整合：在 VS Code 中即時顯示問題。
 - 版本控制：在提交程式碼前自動檢查。
 - 持續整合：在部署前自動執行檢查。
+
 ```bash
 # 安裝
 pip install pylint
@@ -161,13 +236,9 @@ pylint your_file.py
 # 或分析整個目錄
 pylint your_directory/
 ```
-1. 啟用 Linting
-這兩行設定是 Linting 的基礎開關。想像您有一位助手在您寫程式碼時即時檢查您的工作。第一行是總開關，告訴 VS Code「是的，我想要即時程式碼檢查」。第二行特別指定要使用 Pylint 作為檢查工具，就像選擇特定的助手來幫您檢查程式碼。
-```json
-"python.linting.enabled": true,
-"python.linting.pylintEnabled": true,
-```
-2. Pylint 參數配置
+
+
+1. Pylint 參數配置
 這部分設定告訴 Pylint 如何執行檢查工作：
 - "--errors-only" 表示 Pylint 只會報告實際的錯誤，而不會提示風格問題。這就像告訴助手「只告訴我可能導致程式出錯的問題，暫時不用在意程式碼是否漂亮」。
 - "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*" 是一個特別重要的設定，它處理動態生成的程式碼成員。在使用 NumPy、PyTorch 或 OpenCV 這類函式庫時特別有用。這些函式庫會動態生成一些成員，Pylint 可能會誤判這些成員不存在。這個設定就像告訴助手「這些特定的程式庫會自動產生一些功能，不要把它們標記為錯誤」。
@@ -177,7 +248,7 @@ pylint your_directory/
     "--generated-members=numpy.* ,torch.* ,cv2.* ,cv.*"
 ],
 ```
-3. 自動整理 Imports
+2. 自動整理 Imports
 這個設定是關於自動整理您的 import 語句。每當您儲存檔案時，VS Code 會：
 - 移除未使用的 import
 - 按照特定規則排序 import 語句
@@ -188,7 +259,7 @@ pylint your_directory/
     "source.organizeImports": true
 }
 ```
-#### 3.1.2. black：程式碼格式化工具
+#### 3.1.3. black：程式碼格式化工具
 Black 就像是一位固執但高效的美編，它會自動調整您的程式碼格式，使其符合一致的風格標準。它的特點是不講情面 - 用固定的規則確保所有程式碼都有相同的外觀。
 ```bash
 # 安裝
@@ -204,7 +275,7 @@ black .
 black --check your_file.py
 ```
 
-#### 3.1.3. isort：import 語句排序工具
+#### 3.1.4. isort：import 語句排序工具
 isort 專門整理您的 import 語句，就像一位專門整理書架的圖書管理員，確保所有的導入語句都按照邏輯順序排列。
 ```bash
 # 安裝
@@ -220,7 +291,7 @@ isort .
 isort --check-only your_file.py
 ```
 
-#### 3.1.4. pytest：單元測試框架
+#### 3.1.5. pytest：單元測試框架
 pytest 是您的品質保證工程師，它幫助您確保程式碼的每個部分都能正確運作。它提供了一個直觀的方式來編寫和執行測試。
 ```bash
 # 安裝
@@ -237,7 +308,7 @@ pytest -v  # 詳細輸出
 pytest -k "test_name"  # 運行特定測試
 ```
 
-#### 3.1.5. mypy：靜態類型檢查工具
+#### 3.1.6. mypy：靜態類型檢查工具
 mypy 就像是一位型別檢查專家，它在程式碼運行之前就能找出可能的型別錯誤，幫助您避免執行時才發現的問題。
 ```bash
 # 安裝
@@ -249,7 +320,7 @@ mypy your_file.py
 # 檢查整個專案
 mypy .
 ```
-#### 3.1.6. 整合到開發流程
+#### 3.1.7. 整合到開發流程
 這些工具可以整合到您的開發流程中，因此在 VS Code 中的 settings.json 配置：
 ```bash
 {
@@ -270,17 +341,188 @@ mypy .
 ```
 
 
-## 3. 除錯配置
-### 3.1 建立除錯設定
+## 4. 除錯配置
+### 4.1 建立除錯設定
+在 .vscode/launch.json 中添加更多除錯配置：
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": ["runserver"],
+            "django": true
+        },
+        {
+            "name": "Python: Flask",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "app.py",
+                "FLASK_ENV": "development"
+            },
+            "args": ["run", "--no-debugger"]
+        }
+    ]
+}
+```
 
-## 4. 實用快捷鍵
+## 5. 實用快捷鍵
+常用的 VS Code 快捷鍵：
+- 格式化代碼：Shift+Alt+F（Windows）/ Shift+Option+F（macOS）
+- 移動當前行：Alt+↑/↓（Windows）/ Option+↑/↓（macOS）
+- 複製當前行：Shift+Alt+↑/↓（Windows）/ Shift+Option+↑/↓（macOS）
+- 多光標選擇：Ctrl+D（Windows）/ Cmd+D（macOS）
+- 開啟命令面板：Ctrl+Shift+P（Windows）/ Cmd+Shift+P（macOS）
+- 開啟整合終端機：`Ctrl+``（Windows/macOS）
+- 跳轉到定義：F12
+- 查看所有參考：Shift+F12
+- 重新命名符號：F2
 
-## 5. 常見問題解決
-### 5.1 路徑問題
-### 5.2 編碼問題
+## 6. 常見問題解決
+### 6.1 路徑問題
+常見路徑相關問題的解決方案。
+#### 6.1.1 模組找不到
+- 確保 PYTHONPATH 包含專案根目錄
+- 在 .env 文件中設定 PYTHONPATH=${workspaceFolder}
+#### 6.1.2 虛擬環境無法識別
+- 確保虛擬環境路徑正確
+- 重新選擇 Python 解釋器
+- 檢查 settings.json 中的路徑設定
+  
+### 6.2 編碼問題
+處理文件編碼問題：
+1. 在 settings.json 中設定預設編碼：
+   ```json
+   {
+    "files.encoding": "utf8",
+    "files.autoGuessEncoding": true
+   }
+   ```
+2. 對於特定檔案類型的編碼設定：
+   ```json
+   {
+    "[python]": {
+        "files.encoding": "utf8"
+    }
+   }
+   ```
+   
+## 7. 建議的工作流程
+高效的 Python 開發工作流程：
 
-## 6. 建議的工作流程
+1. 專案初始化：
+- 建立虛擬環境
+- 安裝必要套件
+- 設定 git 忽略檔案
 
-## 7. 進階配置
-### 7.1 Git 整合
-### 7.2 自動化測試
+2. 開發流程：
+- 使用版本控制
+- 遵循程式碼風格指南
+- 定期執行測試
+- 使用分支管理功能
+
+3. 測試與品質保證：
+- 編寫單元測試
+- 執行程式碼分析
+- 進行程式碼審查
+- 自動化測試流程
+
+4. 發布與部署：
+- 更新版本號
+- 產生變更記錄
+- 建立發布標籤
+- 執行部署流程
+
+## 8. 進階配置
+### 8.1 Git 整合
+設定 Git 整合功能：
+1. 安裝 GitLens 擴充套件
+2. 配置 .gitignore：
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IDE
+.idea/
+*.swp
+*.swo
+```
+3. 設定 Git 提交模板：
+在 .git/config 中添加
+```
+# 在 .git/config 中添加
+[commit]
+    template = .gitmessage
+```
+   
+### 8.2 自動化測試
+配置自動化測試環境：
+1. 設定 pytest.ini：
+```ini
+[pytest]
+python_files = test_*.py
+python_classes = Test*
+python_functions = test_*
+addopts = -v --cov=. --cov-report=html
+testpaths = tests
+```
+
+2. 設定持續整合：
+- 建立 GitHub Actions 工作流程
+- 設定測試覆蓋率報告
+- 配置自動化部署流程
+  
+3. 在 VS Code 中設定測試探索：
+   ```json
+   {
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests"
+    ]
+   }
+   ```

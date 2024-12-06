@@ -91,7 +91,9 @@ Visual Studio Code（VS Code）是微軟開發的輕量級但功能強大的程�
 
 #### 2.3.2. 啟動虛擬環境：
 成功啟動後，您會在命令提示字元前看到 (venv) 標記，這表示您現在在虛擬環境中工作。
-- Windows: .\venv\Scripts\activate
+- Windows第一種: .\venv\Scripts\activate
+- Windows第二種PowerShell: .\.venv\Scripts\Activate.ps1
+- Windows第二種Command Prompt (cmd):.\.venv\Scripts\activate.bat
 - macOS/Linux: source venv/bin/activate
 
 #### 2.3.3. 專案依賴：確保在激活虛擬環境後再安裝依賴

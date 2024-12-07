@@ -47,19 +47,28 @@ Visual Studio Code（VS Code）是微軟開發的輕量級但功能強大的程�
 ```json
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",
-    "python.formatting.provider": "black",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",  // 改用這個
+        "editor.formatOnSave": true
+    },
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
-    "editor.formatOnSave": true,
     "editor.rulers": [80, 100],
     "files.trimTrailingWhitespace": true
 }
 ```
-- "python.defaultInterpreterPath": Python 解釋器路徑設定
-- "python.formatting.provider": 程式碼格式化設定，使用 Black 作為 Python 程式碼的格式化工具。它會自動調整您的程式碼格式，使其符合一致的風格。
+#### "python.defaultInterpreterPath": Python 解釋器路徑設定
+這行設定指向您專案中的虛擬環境（Virtual Environment）。虛擬環境可以讓每個專案擁有獨立的 Python 套件，避免不同專案之間的套件版本衝突。${workspaceFolder} 是 VS Code 的變數，代表您目前開啟的專案資料夾。
+#### "[python]":
+- "python.formatting.provider": 設定細節可見 3.2.2 Black 配置
+程式碼格式化設定，使用 Black 作為 Python 程式碼的格式化工具。它會自動調整您的程式碼格式，使其符合一致的風格。
+
 - "python.linting": 程式碼檢查設定，使用 Pylint 工具。檢查語法錯誤，還會檢查程式碼風格、可能的邏輯問題，甚至可能的優化建議。
+
 - "editor.formatOnSave": 讓 VS Code 在每次儲存檔案時自動進行格式化。這就像是一個自動整理桌面的助手，每次您完成工作後都會幫您整理工作環境。這確保了您的程式碼總是保持整潔的格式，不需要手動執行格式化命令。
+
 - "editor.rulers":這個設定在編輯器中顯示兩條垂直參考線，分別在第 80 和第 100 列的位置。這些線提供視覺提示，幫助您控制程式碼行的長度。保持適當的行長度可以提高程式碼的可讀性，特別是在並排閱讀或在較小螢幕上檢視程式碼時。就像是在寫作時保持適當的段落長度，讓閱讀更輕鬆。
+
 - "files.trimTrailingWhitespace": 這個設定會自動移除每行結尾的多餘空白字元。
   
 2. launch.json：控制執行行為（如何執行和除錯程式）

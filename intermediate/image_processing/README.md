@@ -72,7 +72,67 @@ print(f"壓縮步驟數：{len(info['compression_steps'])}")
 | initial_quality | int | 95 | 初始壓縮品質（1-100）|
 
 ### 回傳值說明
+函式會回傳一個元組，包含兩個元素：
+1. 最終檔案大小（float，單位為 MB）
+2. 詳細的處理資訊（dictionary）
 
+處理資訊字典包含：
+- original_size_mb：原始檔案大小
+- original_dimensions：原始圖片尺寸
+- final_quality：最終品質設定
+- final_dimensions：最終圖片尺寸
+- compression_steps：壓縮過程的詳細步驟
+
+### 常見問題與解決方案
+1. 找不到輸入檔案：出現 "找不到輸入檔案" 錯誤
+- 確認檔案路徑是否正確
+- 檢查檔案名稱大小寫
+- 使用絕對路徑而非相對路徑
+2. 無法達到目標大小：出現 "無法達到目標大小" 錯誤
+- 調高 max_size_mb 參數
+- 降低 min_quality 參數
+- 降低 min_dimension 參數
+3. 圖片品質不佳：壓縮後的圖片品質不理想
+- 提高 min_quality 參數
+- 提高 initial_quality 參數
+- 適當調整 max_size_mb 參數
+### 進階技巧
+#### 批次處理多個檔案
+```python
+import os
+
+def batch_compress(input_dir, output_dir, **kwargs):
+    for filename in os.listdir(input_dir):
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            input_path = os.path.join(input_dir, filename)
+            output_path = os.path.join(output_dir, filename)
+            try:
+                final_size, info = compress_image(input_path, output_path, **kwargs)
+                print(f"已處理 {filename}: {final_size:.2f}MB")
+            except Exception as e:
+                print(f"處理 {filename} 時發生錯誤: {str(e)}")
+```
+#### 壓縮進度追蹤
+```python
+final_size, info = compress_image(input_path, output_path)
+for step in info['compression_steps']:
+    if step['action'] == 'quality_reduction':
+        print(f"品質調整至 {step['quality']}, 檔案大小: {step['size_mb']:.2f}MB")
+    else:
+        print(f"尺寸調整至 {step['dimensions']}, 檔案大小: {step['size_mb']:.2f}MB")
+```
+
+### 效能建議
+1. 對於大量圖片處理：
+- 考慮使用多執行緒處理
+- 設定適當的初始品質值以減少嘗試次數
+- 使用 RAM 磁碟來加速暫存檔案的讀寫
+2. 對於高解析度圖片：
+- 先評估是否需要保持原始解析度
+- 考慮設定較大的 min_dimension 值
+- 可能需要調整 max_size_mb 參數
+
+### 未來目標
 考慮添加的功能：
 - 支援更多圖片格式
 - 添加進度回調功能

@@ -48,28 +48,37 @@ Visual Studio Code（VS Code）是微軟開發的輕量級但功能強大的程�
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",
     "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter",  // 改用這個
-        "editor.formatOnSave": true
+        "editor.defaultFormatter": "ms-python.python", 
+        "editor.formatOnSave": true,
+　　　　　"editor.rulers": [80, 100]
     },
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
-    "editor.rulers": [80, 100],
+    
     "files.trimTrailingWhitespace": true
 }
 ```
 #### "python.defaultInterpreterPath": Python 解釋器路徑設定
 這行設定指向您專案中的虛擬環境（Virtual Environment）。虛擬環境可以讓每個專案擁有獨立的 Python 套件，避免不同專案之間的套件版本衝突。${workspaceFolder} 是 VS Code 的變數，代表您目前開啟的專案資料夾。
 #### "[python]":
-- "python.formatting.provider": 設定細節可見 3.2.2 Black 配置
-程式碼格式化設定，使用 Black 作為 Python 程式碼的格式化工具。它會自動調整您的程式碼格式，使其符合一致的風格。
-
-- "python.linting": 程式碼檢查設定，使用 Pylint 工具。檢查語法錯誤，還會檢查程式碼風格、可能的邏輯問題，甚至可能的優化建議。
-
-- "editor.formatOnSave": 讓 VS Code 在每次儲存檔案時自動進行格式化。這就像是一個自動整理桌面的助手，每次您完成工作後都會幫您整理工作環境。這確保了您的程式碼總是保持整潔的格式，不需要手動執行格式化命令。
-
-- "editor.rulers":這個設定在編輯器中顯示兩條垂直參考線，分別在第 80 和第 100 列的位置。這些線提供視覺提示，幫助您控制程式碼行的長度。保持適當的行長度可以提高程式碼的可讀性，特別是在並排閱讀或在較小螢幕上檢視程式碼時。就像是在寫作時保持適當的段落長度，讓閱讀更輕鬆。
-
-- "files.trimTrailingWhitespace": 這個設定會自動移除每行結尾的多餘空白字元。
+- "python.formatting.provider":有兩個選項
+1. "ms-python.python":這是主要的 Python 擴充功能，提供基本的 Python 開發功能
+2. "ms-python.black-formatter":這是專門的 Black 格式化工具擴充功能，只專注於代碼格式化功能，使用 Black 的格式化規則，程式碼格式化設定，使用 Black 作為 Python 程式碼的格式化工具。要注意與主要 Python 擴展產生衝突，有時會有版本相容性的問題。 (手動設置Black 配置設定細節可見 3.2.2)
+- "editor.formatOnSave":
+1. true:當你儲存 Python 檔案時，會自動進行格式化，這就像是一個自動整理桌面的助手，每次您完成工作後都會幫您整理工作環境。
+2. false:需要手動格式化（通常是 Shift+Alt+F）
+#### "python.linting": 
+程式碼檢查設定，使用 Pylint 工具。檢查語法錯誤，還會檢查程式碼風格、可能的邏輯問題，甚至可能的優化建議。詳細細節可見[3.2.1 Pylint 配置]
+1. "python.linting.enabled": true
+- 這是啟用 Python 程式碼檢查的總開關
+- 會在你編寫程式碼時即時檢查問題
+- 會顯示紅色波浪線（錯誤）或黃色波浪線（警告）
+2. "python.linting.pylintEnabled": true
+指定使用 Pylint 作為程式碼檢查工具
+#### "editor.rulers":
+這個設定在編輯器中顯示兩條垂直參考線，分別在第 80 和第 100 列的位置。這些線提供視覺提示，幫助您控制程式碼行的長度。保持適當的行長度可以提高程式碼的可讀性，特別是在並排閱讀或在較小螢幕上檢視程式碼時。就像是在寫作時保持適當的段落長度，讓閱讀更輕鬆。
+#### "files.trimTrailingWhitespace":
+這個設定會自動移除每行結尾的多餘空白字元。
   
 2. launch.json：控制執行行為（如何執行和除錯程式）
 錯指令書，就像是飛行前的檢查清單。它告訴 VS Code 當您要執行或除錯程式時該做什麼。這個檔案定義了不同的執行場景，就像不同的飛行計畫。

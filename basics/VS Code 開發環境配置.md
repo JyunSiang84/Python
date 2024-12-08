@@ -50,7 +50,7 @@ Visual Studio Code（VS Code）是微軟開發的輕量級但功能強大的程�
     "[python]": {
         "editor.defaultFormatter": "ms-python.python", 
         "editor.formatOnSave": true,
-　　　　　"editor.rulers": [80, 100]
+        "editor.rulers": [80, 100]
     },
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,

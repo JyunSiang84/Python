@@ -130,20 +130,20 @@ Bandit，這像是安全性稽核專家
 首先，虛擬環境就像是為您的專案創建一個獨立的工作空間。想像您在一個大型辦公室中有自己的私人辦公室，所有的工具都是為您的專案量身定制的。
 以下建立和管理虛擬環境引導。
 
-#### 2.3.1. 在終端機中建立虛擬環境：
+#### 2.3.1 在終端機中建立虛擬環境：
 ```bash
  python -m venv venv
 ```
 這個指令中，第一個 venv 是 Python 的虛擬環境模組，第二個 venv 是您要創建的虛擬環境資料夾名稱。您可以選擇其他名稱，但 venv 是一個常見的慣例。
 
-#### 2.3.2. 啟動虛擬環境：
+#### 2.3.2 啟動虛擬環境：
 成功啟動後，您會在命令提示字元前看到 (venv) 標記，這表示您現在在虛擬環境中工作。
 - Windows第一種: .\venv\Scripts\activate
 - Windows第二種PowerShell: .\.venv\Scripts\Activate.ps1
 - Windows第二種Command Prompt (cmd):.\.venv\Scripts\activate.bat
 - macOS/Linux: source venv/bin/activate
 
-#### 2.3.3. 專案依賴：確保在激活虛擬環境後再安裝依賴
+#### 2.3.3 專案依賴：確保在激活虛擬環境後再安裝依賴
 - 新專案建立(更新)依賴清單：pip freeze > requirements.txt
 - 安裝現有專案的依賴：pip install -r requirements.txt
 - 套件更新：
@@ -153,16 +153,16 @@ pip freeze | %{$_.split('==')[0]} | %{pip install --upgrade $_}  # Windows
 pip freeze | cut -d'=' -f1 | xargs pip install --upgrade  # macOS/Linux
 #要記得 更新 依賴清單
 ```
-#### 2.3.4. 確保 VS Code 使用虛擬環境的 Python 解釋器
+#### 2.3.4 確保 VS Code 使用虛擬環境的 Python 解釋器
 這個過程就像是告訴 VS Code 要使用哪個「工具箱」來執行您的 Python 程式。
 
-##### 方法一：透過命令面板選擇（最直觀的方式）
+##### 2.3.4-1 方法一：透過命令面板選擇（最直觀的方式）
 1. 首先按下快捷鍵開啟命令面板：
 - Windows/Linux：Ctrl + Shift + P
 - macOS：Cmd + Shift + P
 2. 在命令面板中輸入 "Python: Select Interpreter"，您會看到一個下拉選單，列出所有可用的 Python 解釋器。在這裡，您應該能看到虛擬環境的 Python 解釋器，通常會標示為 ('venv': venv)。
 3. 選擇您的虛擬環境解釋器後，VS Code 會在狀態列（左下角）顯示所選的 Python 版本，這樣您就能確認是否正在使用正確的解釋器。
-##### 方法二：透過設定檔配置（適合團隊協作）
+##### 2.3.4-2 方法二：透過設定檔配置（適合團隊協作）
 在專案的 .vscode/settings.json 檔案中添加以下設定：
 ```json
 {
@@ -173,9 +173,9 @@ pip freeze | cut -d'=' -f1 | xargs pip install --upgrade  # macOS/Linux
 這裡的路徑需要根據您的作業系統調整：
 - Windows：使用 venv\\Scripts\\python.exe
 - macOS/Linux：使用 venv/bin/python
-##### 方法三：建立工作區設定（最靈活的方式）
+##### 2.3.4-3 方法三：建立工作區設定（最靈活的方式）
 
-#### 2.3.5. 確認虛擬環境是否正確啟用/結束使用虛擬環境：
+#### 2.3.5 確認虛擬環境是否正確啟用/結束使用虛擬環境：
 - 確認虛擬環境是否正確啟用，有幾個方法可以確認您是否正在使用虛擬環境：
 1. 觀察狀態列：在 VS Code 的左下角，您應該能看到 Python 解釋器的路徑，它應該指向您的虛擬環境。
 2. 透過終端機確認：開啟 VS Code 的整合終端機（Ctrl+），您應該能看到提示符號前有 (venv)` 標記。

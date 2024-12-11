@@ -188,57 +188,6 @@ print(sys.executable)  # 這會顯示當前使用的 Python 解釋器路徑
 ```bash
 deactivate
 ```
-### 2.4 版本控制配置-Git 整合
-設定 Git 整合功能：
-1. 安裝 GitLens 擴充套件
-2. 配置 .gitignore：
-```gitignore
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual Environment
-venv/
-ENV/
-env/
-
-# VS Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# IDE
-.idea/
-*.swp
-*.swo
-```
-3. 設定 Git 提交模板：
-在 .git/config 中添加
-```
-# 在 .git/config 中添加
-[commit]
-    template = .gitmessage
-```
 
 ## 3. 程式碼品質工具
 ### 3.1 安裝開發工具

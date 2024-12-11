@@ -21,10 +21,10 @@ Visual Studio Code（VS Code）是微軟開發的輕量級但功能強大的程�
 - 提供更快的類型檢查和程式碼智能提示
   
 #### 1.2.2 建議的額外擴充套件：
-- Python Test Explorer：用於管理和執行單元測試
-- Python Docstring Generator：自動生成文件字串
-- Python Indent：智能縮排支援
-- GitLens：增強的 Git 整合功能
+1. Python Test Explorer：用於管理和執行單元測試
+2. Python Docstring Generator：自動生成文件字串
+3. Python Indent：智能縮排支援
+4. GitLens：增強的 Git 整合功能
 
 ## 2. 環境配置
 ### 2.1 Python 直譯器選擇
@@ -60,13 +60,15 @@ Visual Studio Code（VS Code）是微軟開發的輕量級但功能強大的程�
 ```
 ##### 2.2.1-1 "python.defaultInterpreterPath": Python 解釋器路徑設定
 這行設定指向您專案中的虛擬環境（Virtual Environment）。虛擬環境可以讓每個專案擁有獨立的 Python 套件，避免不同專案之間的套件版本衝突。${workspaceFolder} 是 VS Code 的變數，代表您目前開啟的專案資料夾。
+
 ##### 2.2.1-2 "[python]":
-- "python.formatting.provider":有兩個選項
-1. "ms-python.python":這是主要的 Python 擴充功能，提供基本的 Python 開發功能
-2. "ms-python.black-formatter":這是專門的 Black 格式化工具擴充功能，只專注於代碼格式化功能，使用 Black 的格式化規則，程式碼格式化設定，使用 Black 作為 Python 程式碼的格式化工具。要注意與主要 Python 擴展產生衝突，有時會有版本相容性的問題。 (手動設置Black 配置設定細節可見 3.2.2)
-- "editor.formatOnSave":
-1. true:當你儲存 Python 檔案時，會自動進行格式化，這就像是一個自動整理桌面的助手，每次您完成工作後都會幫您整理工作環境。
-2. false:需要手動格式化（通常是 Shift+Alt+F）
+1. "python.formatting.provider":有兩個選項
+   - "ms-python.python":這是主要的 Python 擴充功能，提供基本的 Python 開發功能
+   - "ms-python.black-formatter":這是專門的 Black 格式化工具擴充功能，只專注於代碼格式化功能，使用 Black 的格式化規則，程式碼格式化設定，使用 Black 作為 Python 程式碼的格式化工具。要注意與主要 Python 擴展產生衝突，有時會有版本相容性的問題。 (手動設置Black 配置設定細節可見 3.2.2)
+2. "editor.formatOnSave":
+  - true:當你儲存 Python 檔案時，會自動進行格式化，這就像是一個自動整理桌面的助手，每次您完成工作後都會幫您整理工作環境。
+  - false:需要手動格式化（通常是 Shift+Alt+F）
+
 ##### 2.2.1-3 "python.linting": 
 程式碼檢查設定，使用 Pylint 工具。檢查語法錯誤，還會檢查程式碼風格、可能的邏輯問題，甚至可能的優化建議。詳細細節可見[3.2.1 Pylint 配置]
 ```

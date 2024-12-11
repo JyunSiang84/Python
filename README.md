@@ -8,8 +8,9 @@
 
 ### 第一階段：Python 基礎 (basics/)
 這個階段主要學習 Python 的基礎語法和程式設計概念：
+
 #### 1. Python 環境與工具
-- [x]  VS Code 開發環境配置
+- [x]  [VS Code 開發環境配置](./basics/VS Code 開發環境配置.md)
 - [x]  Git 版本控制基礎
 - [ ]  虛擬環境管理
 
@@ -29,6 +30,7 @@
 
 ### 第二階段：進階概念 (intermediate/)
 深入學習 Python 的進階特性和程式設計模式：
+
 #### 1. 物件導向程式設計
 - [ ] 類別與物件
 - [ ] 繼承與多型
@@ -133,15 +135,17 @@
 - [Real Python](<https://realpython.com/>)
 - [Python Weekly](<https://www.pythonweekly.com/>)
 - [Codecademy Python](<https://www.codecademy.com/learn/learn-python-3>)
-
+- [grandmacan](https://grandmacan.com/)
+  
 #### 2. 教學影片
 - [Sentdex Python 基礎教學](<https://www.youtube.com/playlist?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M>)
 - [Corey Schafer Python 教學](<https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU>)
-
+- [grandmacan](https://grandmacan.com/)
+  
 #### 3. 練習平台
 - Codewars(<https://www.codewars.com/>)
 - HackerRank(<https://www.codewars.com/>)
-- 
+
 ## 學習筆記與心得 📝
 我在 Wiki 中記錄了詳細的學習筆記和心得：
 1. Python 基礎概念

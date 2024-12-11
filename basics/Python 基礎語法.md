@@ -19,7 +19,7 @@ CONSTANT = 3.14        # 全大寫表示常數
 my-name = "小華"       # 不能使用連字號
 class = "一年級"       # 不能使用 Python 保留字
 ```
-1. 基本規則（必須遵守）
+##### 1. 基本規則（必須遵守）
 - 變數名稱只能包含：
 ```python
 # 合法的字元
@@ -42,7 +42,7 @@ for = "迴圈"         # for 是保留字
 class = "類別"       # class 是保留字
 ```
 
-2. 命名慣例（建議遵守）
+##### 2. 命名慣例（建議遵守）
 - 一般變數使用小寫字母：
 ```python
 # 建議的寫法
@@ -80,7 +80,7 @@ class Config:
     DEBUG_MODE = True
 ```
 
-3. 特殊命名規則
+##### 3. 特殊命名規則
 - 私有變數命名：
 ```python
 _private_var = "這是約定俗成的私有變數"
@@ -94,7 +94,7 @@ __str__ = "字串表示方法"
 __len__ = "長度方法"
 ```
 
-4. 命名的最佳實踐
+##### 4. 命名的最佳實踐
 - 使用描述性名稱：
 ```python
 # 好的命名
@@ -124,7 +124,7 @@ calculated_average_score_for_all_students_in_class = 85    # 太長
 class_avg_score = 85    # 較好
 ```
 
-5. 進階－函式命名
+##### 5. 進階－函式命名
 當我們在寫函式時，通常希望函式名稱能夠清楚表達這個函式的行為：
 ```python
 # 動詞 + 名詞的形式
@@ -148,7 +148,7 @@ def can_access(user, resource):
     return check_permission(user, resource)
 ```
 
-6. 進階－類別相關命名
+##### 6. 進階－類別相關命名
 類別的命名有其特殊的慣例：
 ```python
 # 類別名稱使用大寫開頭（PascalCase）
@@ -167,7 +167,7 @@ class NetworkConnectionError(Exception):
     pass
 ```
 
-8. 進階－集合類型命名
+##### 7. 進階－集合類型命名
 當處理列表、字典等集合類型時，名稱應該反映其內容：
 ```python
 # 列表通常使用複數形式
@@ -183,7 +183,7 @@ valid_states = {'open', 'closed', 'pending'}
 unique_visitors = {user.id for user in page_visits}
 ```
 
-9. 進階－迭代變數命名
+##### 8. 進階－迭代變數命名
 在迴圈和推導式中的命名：
 ```python
 # 單個字母用於簡單迭代
@@ -200,7 +200,7 @@ for row_index, row in enumerate(matrix):
         process_cell(row_index, col_index, value)
 ```
 
-10. 進階－回調函式命名
+##### 9. 進階－回調函式命名
 處理回調和事件處理時的命名：
 ```python
 # 使用 on_ 前綴表示事件處理
@@ -215,7 +215,7 @@ def handle_error(error_code):
     log_error(error_code)
 ```
 
-11. 進階－臨時變數命名
+##### 10. 進階－臨時變數命名
 有時需要使用臨時變數：
 ```python
 # 臨時變數要有意義
@@ -226,7 +226,7 @@ old_value = current_value        # 而不是用 x 或 y
 squared_numbers = [num ** 2 for num in numbers]  # 而不是 [x**2 for x in numbers]
 ```
 
-12. 進階－單位相關命名
+##### 11. 進階－單位相關命名
 當變數涉及單位時：
 ```python
 # 在名稱中包含單位資訊
@@ -241,7 +241,182 @@ cache_duration_days = 7  # 天數
 ```
 
 #### 1.1.2 變數作用域（全域與區域變數）
+理解變數作用域對於寫出可維護和可靠的程式碼非常重要。它幫助我們：
+- 避免命名衝突
+- 控制變數的可見性
+- 管理程式的狀態
+- 實現資料封裝
+##### 1. 變數作用域的基本概念
+變數作用域（Variable Scope）決定了變數在程式中的可見性和生命週期。Python 主要有四種作用域，按照查找順序分為：
+- Local（區域）：函式內的變數
+- Enclosing（閉包）：巢狀函式中外層函式的變數
+- Global（全域）：模組層級的變數
+- Built-in（內建）：Python 內建的變數
+這個順序也被稱為 LEGB 規則，讓我們通過例子來理解：
+```python
+# Built-in 作用域
+# 像 print、len、str 這些都是內建作用域的名稱
+
+# Global 作用域
+global_var = "我是全域變數"
+
+def outer_function():
+    # Enclosing 作用域
+    enclosing_var = "我是閉包變數"
+    
+    def inner_function():
+        # Local 作用域
+        local_var = "我是區域變數"
+        print(local_var)      # 可以訪問區域變數
+        print(enclosing_var)  # 可以訪問閉包變數
+        print(global_var)     # 可以訪問全域變數
+
+    inner_function()
+
+outer_function()
+```
+
+##### 2. 區域變數（Local Variables）
+區域變數是在函式內部定義的變數，只能在該函式內部使用：
+```python
+def calculate_sum():
+    # x 和 y 是區域變數
+    x = 10
+    y = 20
+    total = x + y
+    return total
+
+# print(x)  # 這會產生錯誤，因為 x 是區域變數
+result = calculate_sum()
+print(result)  # 這是可以的，因為我們使用了返回值
+```
+##### 3. 全域變數（Global Variables）
+全域變數是在模組層級定義的變數，可以在整個模組中使用：
+```python
+# 全域變數
+counter = 0
+
+def increment_counter():
+    global counter  # 宣告我們要使用全域變數
+    counter += 1    # 修改全域變數
+    print(f"計數器現在是: {counter}")
+
+def print_counter():
+    print(f"計數器的值是: {counter}")  # 讀取全域變數不需要 global 宣告
+
+increment_counter()  # 輸出：計數器現在是: 1
+print_counter()     # 輸出：計數器的值是: 1
+```
+##### 4. 變數遮蔽（Variable Shadowing）
+當區域變數和全域變數同名時，區域變數會"遮蔽"全域變數：
+```python
+name = "全域小明"
+
+def print_name():
+    name = "區域小華"  # 這會建立一個新的區域變數
+    print(f"函式內的名字是: {name}")  # 輸出：區域小華
+
+print(f"全域的名字是: {name}")  # 輸出：全域小明
+print_name()
+print(f"全域的名字仍然是: {name}")  # 輸出：全域小明
+```
+##### 5. nonlocal 關鍵字
+在巢狀函式中，如果要修改外層函式的變數，需要使用 nonlocal 關鍵字：
+```python
+def counter_function():
+    count = 0
+    
+    def increment():
+        nonlocal count  # 宣告我們要使用外層函式的變數
+        count += 1
+        return count
+    
+    return increment
+
+counter = counter_function()
+print(counter())  # 1
+print(counter())  # 2
+print(counter())  # 3
+```
+##### 6. 使用建議和最佳實踐
+- 盡量避免使用全域變數：
+```python
+# 不好的做法
+total = 0
+
+def add_to_total(value):
+    global total
+    total += value
+
+# 更好的做法
+class Calculator:
+    def __init__(self):
+        self.total = 0
+    
+    def add_value(self, value):
+        self.total += value
+```
+- 使用函式參數而不是全域變數：
+```python
+# 不好的做法
+base_rate = 0.05
+
+def calculate_interest(amount):
+    return amount * base_rate
+
+# 更好的做法
+def calculate_interest(amount, rate=0.05):
+    return amount * rate
+```
+- 返回值而不是修改全域狀態：
+```python
+# 不好的做法
+result = []
+
+def process_data(data):
+    global result
+    result = [x * 2 for x in data]
+
+# 更好的做法
+def process_data(data):
+    return [x * 2 for x in data]
+
+result = process_data([1, 2, 3])
+```
+
+##### 7. 變數作用域的應用場景
+- 配置值和常數：
+```python
+# config.py
+DATABASE_URL = "postgresql://localhost:5432"
+MAX_CONNECTIONS = 100
+
+def get_db_config():
+    return {
+        "url": DATABASE_URL,
+        "max_connections": MAX_CONNECTIONS
+    }
+```
+- 計數器和累加器：
+```python
+# config.py
+DATABASE_URL = "postgresql://localhost:5432"
+MAX_CONNECTIONS = 100
+
+def get_db_config():
+    return {
+        "url": DATABASE_URL,
+        "max_connections": MAX_CONNECTIONS
+    }
+```
+
 #### 1.1.3 變數生命週期
+理解變數的生命週期有助於我們：
+- 更有效地管理記憶體
+- 避免記憶體洩漏
+- 寫出更高效的程式碼
+- 理解並預防一些常見的程式錯誤
+  
 #### 1.1.4 變數記憶體管理
 
 ### 1.2 基本資料型態

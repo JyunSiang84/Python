@@ -1,10 +1,248 @@
 # Python 基礎語法
+這份文件詳細介紹 Python 的基礎語法，包含變數、運算子、流程控制、函式和模組等核心概念。每個概念都會搭配實際的程式碼範例。
 ## 1. 變數與資料型態
 ### 1.1 變數基礎概念
-- 變數命名規則
-- 變數作用域（全域與區域變數）
-- 變數生命週期
-- 變數記憶體管理
+在 Python 中，變數就像是一個標籤或名稱，指向記憶體中儲存的資料。當我們建立一個變數時，Python 會在記憶體中配置適當的空間來儲存資料，並將變數名稱與這個記憶體位置建立連結。
+#### 1.1.1 變數命名規則
+了寫出清晰易讀的程式碼，且為了讓程式碼能夠執行， Python 變數命名有一些必須遵守的基本規則：
+```python
+# 變數命名規則示範
+# 正確的命名方式
+student_name = "小明"    # 使用下劃線連接（推薦）
+studentAge = 20         # 駝峰式命名
+_private = "私有變數"    # 底線開頭
+student1 = "小華"      # 可以包含數字（但不能以數字開頭）
+CONSTANT = 3.14        # 全大寫表示常數
+
+# 錯誤的命名方式
+1name = "小明"         # 不能以數字開頭
+my-name = "小華"       # 不能使用連字號
+class = "一年級"       # 不能使用 Python 保留字
+```
+1. 基本規則（必須遵守）
+- 變數名稱只能包含：
+```python
+# 合法的字元
+alphabet = "abc"     # 英文字母（a-z，A-Z）
+number_2 = 42        # 數字（0-9，不能放在開頭）
+user_name = "test"   # 底線（_）
+```
+- 大小寫敏感：
+```python
+name = "小明"
+Name = "小華"
+NAME = "小陳"
+# 這是三個不同的變數，因為 Python 會區分大小寫
+```
+- 不能使用保留字：
+```python
+# 這些都是錯誤的命名
+if = "條件"          # if 是保留字
+for = "迴圈"         # for 是保留字
+class = "類別"       # class 是保留字
+```
+
+2. 命名慣例（建議遵守）
+- 一般變數使用小寫字母：
+```python
+# 建議的寫法
+first_name = "John"
+age = 25
+total_score = 98
+
+# 不建議的寫法
+FirstName = "John"    # 這種寫法通常用於類別名稱
+AGE = 25             # 這種寫法通常用於常數
+```
+- 多個單字的連接方式：
+```python
+# 建議使用底線連接（Snake Case）
+user_name = "john_doe"
+total_score = 100
+current_user_age = 25
+
+# 也可以使用駝峰式（Camel Case），但在 Python 中比較少見
+userName = "john_doe"
+totalScore = 100
+currentUserAge = 25
+```
+- 常數命名使用全大寫：
+```python
+# 全大寫，單字間用底線連接
+MAX_CONNECTIONS = 100
+DEFAULT_TIMEOUT = 30
+API_BASE_URL = 'https://api.example.com'
+
+# 模組層級的配置
+class Config:
+    DATABASE_URL = 'postgresql://localhost:5432'
+    CACHE_TIMEOUT = 300
+    DEBUG_MODE = True
+```
+
+3. 特殊命名規則
+- 私有變數命名：
+```python
+_private_var = "這是約定俗成的私有變數"
+__really_private = "這是強制的私有變數"
+```
+
+- 特殊方法命名：
+```python
+__init__ = "建構子方法"
+__str__ = "字串表示方法"
+__len__ = "長度方法"
+```
+
+4. 命名的最佳實踐
+- 使用描述性名稱：
+```python
+# 好的命名
+user_age = 25
+total_score = 100
+is_valid = True
+
+# 不好的命名
+a = 25
+ts = 100
+flag = True
+```
+- 避免使用容易混淆的名稱：
+```python
+# 避免使用
+l = 1          # 小寫 L 容易與數字 1 混淆
+O = 0          # 大寫 O 容易與數字 0 混淆
+```
+- 適當的名稱長度：
+```python
+# 太短的名稱可能不夠清楚
+n = "John"              # 不清楚
+name = "John"           # 較好
+
+# 太長的名稱也不好
+calculated_average_score_for_all_students_in_class = 85    # 太長
+class_avg_score = 85    # 較好
+```
+
+5. 進階－函式命名
+當我們在寫函式時，通常希望函式名稱能夠清楚表達這個函式的行為：
+```python
+# 動詞 + 名詞的形式
+def calculate_total(numbers):
+    return sum(numbers)
+
+def get_user_info(user_id):
+    return user_database[user_id]
+
+def validate_email(email):
+    return '@' in email
+
+# 布林函式通常用 is_、has_、can_ 開頭
+def is_adult(age):
+    return age >= 18
+
+def has_permission(user, action):
+    return user.permissions[action]
+
+def can_access(user, resource):
+    return check_permission(user, resource)
+```
+
+6. 進階－類別相關命名
+類別的命名有其特殊的慣例：
+```python
+# 類別名稱使用大寫開頭（PascalCase）
+class UserAccount:
+    def __init__(self, username):
+        # 實例變數通常用底線連接（snake_case）
+        self.user_name = username
+        self._account_balance = 0  # 受保護的屬性
+        self.__password = None     # 私有屬性
+
+# 異常類別通常以 Error 結尾
+class ValidationError(Exception):
+    pass
+
+class NetworkConnectionError(Exception):
+    pass
+```
+
+8. 進階－集合類型命名
+當處理列表、字典等集合類型時，名稱應該反映其內容：
+```python
+# 列表通常使用複數形式
+users = ['Alice', 'Bob', 'Charlie']
+active_accounts = [acc for acc in accounts if acc.is_active]
+
+# 字典可以用描述性的名稱
+user_scores = {'Alice': 95, 'Bob': 87, 'Charlie': 92}
+config_settings = {'timeout': 30, 'retry_count': 3}
+
+# 集合通常表達其元素的特性
+valid_states = {'open', 'closed', 'pending'}
+unique_visitors = {user.id for user in page_visits}
+```
+
+9. 進階－迭代變數命名
+在迴圈和推導式中的命名：
+```python
+# 單個字母用於簡單迭代
+for i in range(5):
+    print(i)
+
+# 更具描述性的迭代變數
+for user in users:
+    process_user(user)
+
+# 當有巢狀迴圈時
+for row_index, row in enumerate(matrix):
+    for col_index, value in enumerate(row):
+        process_cell(row_index, col_index, value)
+```
+
+10. 進階－回調函式命名
+處理回調和事件處理時的命名：
+```python
+# 使用 on_ 前綴表示事件處理
+def on_click(event):
+    handle_click_event(event)
+
+def on_data_received(data):
+    process_incoming_data(data)
+
+# 使用 handle_ 前綴表示處理程序
+def handle_error(error_code):
+    log_error(error_code)
+```
+
+11. 進階－臨時變數命名
+有時需要使用臨時變數：
+```python
+# 臨時變數要有意義
+temp_user = copy.deepcopy(user)  # 而不是just用 temp
+old_value = current_value        # 而不是用 x 或 y
+
+# 在列表推導式中的臨時變數
+squared_numbers = [num ** 2 for num in numbers]  # 而不是 [x**2 for x in numbers]
+```
+
+12. 進階－單位相關命名
+當變數涉及單位時：
+```python
+# 在名稱中包含單位資訊
+timeout_seconds = 30
+file_size_bytes = 1024
+distance_km = 100
+temperature_celsius = 25
+
+# 時間間隔
+retry_interval_ms = 500  # 毫秒
+cache_duration_days = 7  # 天數
+```
+
+#### 1.1.2 變數作用域（全域與區域變數）
+#### 1.1.3 變數生命週期
+#### 1.1.4 變數記憶體管理
 
 ### 1.2 基本資料型態
 #### 1.2.1 數值型態
